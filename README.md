@@ -1,4 +1,6 @@
 ## Hexagonal Architecture
+database : postgres:latest
+
 ```golang
 my-app
 ├── cmd
@@ -19,14 +21,24 @@ my-app
 │   └── usecase
 │       ├── task_usecase.go
 │       └── user_usecase.go
-├── migrations
-│   └── _init.sql
 └── pkg
     └── server
         └── server.go
 ```
 
+## GO Modules
+
+```ssh
+go mod init go-restapi
+go get -u github.com/go-chi/chi/v5
+go get -u gorm.io/gorm
+go get -u gorm.io/driver/postgres
+go get -u github.com/stretchr/testify/assert
+```
+
 ## Models
+
+Task table;
 ```golang
 type Task struct {
 	ID          int       `gorm:"primary_key" json:"id"`
@@ -47,6 +59,7 @@ CREATE TABLE public.tasks (
 );
 ```
 
+User Table;
 ```golang
 type User struct {
 	ID        int       `gorm:"primary_key" json:"id"`
@@ -56,4 +69,15 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
+```
+```sql
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    first_name character varying(255),
+    last_name character varying(255),
+    email character varying(255),
+    password character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
 ```
